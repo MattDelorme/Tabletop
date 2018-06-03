@@ -19,6 +19,9 @@ namespace Tabletop
         public static TabletopStats operator +(TabletopStats a, TabletopStats b)
         {
             TabletopStats result = new TabletopStats();
+
+            result.Movement = a.Movement + b.Movement;
+
             result.WS = a.WS + b.WS;
             result.BS = a.BS + b.BS;
             result.S = a.S + b.S;
@@ -33,6 +36,9 @@ namespace Tabletop
         public static TabletopStats operator -(TabletopStats a, TabletopStats b)
         {
             TabletopStats result = new TabletopStats();
+
+            result.Movement = a.Movement - b.Movement;
+
             result.WS = a.WS - b.WS;
             result.BS = a.BS - b.BS;
             result.S = a.S - b.S;

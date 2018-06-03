@@ -1,30 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
+using Tabletop;
 
 namespace Tabletop
 {
     [Serializable]
     public class TabletopSoldier
     {
-        public TabletopStats BaseStats;
-        public List<TabletopWeapon> Weapons;
+        public TabletopStats CurrentStats { get; private set; }
 
-        private int equippedWeaponIndex;
+        public int CurrentWounds { get; private set; }
+
         public TabletopWeapon EquippedWeapon
         {
-            get { return Weapons.Count > 0 ? Weapons[equippedWeaponIndex] : null; }
+            get { return tabletopSoldierData.EquippedWeapon; }
         }
 
-        public void EquipWeapon(int weaponIndex)
+        private readonly TabletopSoldierData tabletopSoldierData;
+
+        public TabletopSoldier(TabletopSoldierData tabletopSoldierData)
         {
-            if (Weapons.Count > weaponIndex)
+            this.tabletopSoldierData = tabletopSoldierData;
+            CurrentStats = tabletopSoldierData.BaseStats;
+            foreach (var modifier in tabletopSoldierData.Modifiers)
             {
-                equippedWeaponIndex = weaponIndex;
+                CurrentStats += modifier;
             }
-            else
-            {
-                throw new IndexOutOfRangeException(string.Format("Index {0} is out of range, Weapons count is {1}", weaponIndex, Weapons.Count));
-            }
+            CurrentWounds = CurrentStats.W;
+        }
+
+        public void ApplyWounds(int wounds)
+        {
+            CurrentWounds -= wounds;
+            CurrentWounds = CurrentWounds < 0 ? 0 : CurrentWounds;
         }
     }
 }
