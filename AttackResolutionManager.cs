@@ -23,7 +23,11 @@ namespace Tabletop
                 if (attackResult.IsHit)
                 {
                     attackResult.IsWounded = D6.Roll() >= target.CurrentStats.GetWoundRoll(attacker.EquippedWeapon.Strength);
-                    if (!attackResult.IsWounded)
+                    if (attackResult.IsWounded)
+                    {
+                        attackResult.Wounds = 1;
+                    }
+                    else
                     {
                         UnityEngine.Debug.Log("Not wounded");
                     }
