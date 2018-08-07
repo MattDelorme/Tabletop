@@ -7,11 +7,12 @@ namespace Tabletop
     [Serializable]
     public class TabletopSoldierData
     {
+        public string Name;
         public TabletopStats BaseStats;
-        public List<TabletopWeapon> Weapons;
+        public List<TabletopWeaponDataDefinitionId> Weapons;
 
         [SerializeField] int equippedWeaponIndex;
-        public TabletopWeapon EquippedWeapon
+        public TabletopWeaponDataDefinitionId EquippedWeapon
         {
             get { return Weapons.Count > 0 ? Weapons[equippedWeaponIndex] : null; }
         }
