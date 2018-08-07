@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Tabletop
 {
     [Serializable]
-    public class TabletopSoldierTeamData : ScriptableObject
+    public class TabletopSoldierTeamData
     {
         public string Name;
         public List<TabletopSoldierData> Soldiers;
