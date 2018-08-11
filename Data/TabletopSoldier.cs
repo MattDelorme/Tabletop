@@ -11,8 +11,8 @@ namespace Tabletop
 
         public int CurrentWounds { get; private set; }
 
-        private TabletopWeaponDataDefinition equippedWeapon;
-        public TabletopWeaponDataDefinition EquippedWeapon
+        private WeaponDataDefinition equippedWeapon;
+        public WeaponDataDefinition EquippedWeapon
         {
             get
             {

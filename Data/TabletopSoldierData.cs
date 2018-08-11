@@ -9,10 +9,10 @@ namespace Tabletop
     {
         public string Name;
         public TabletopStats BaseStats;
-        public List<TabletopWeaponDataDefinitionId> Weapons;
+        public List<WeaponDataDefinitionId> Weapons;
 
         [SerializeField] int equippedWeaponIndex;
-        public TabletopWeaponDataDefinitionId EquippedWeapon
+        public WeaponDataDefinitionId EquippedWeapon
         {
             get { return Weapons.Count > 0 ? Weapons[equippedWeaponIndex] : null; }
         }
