@@ -15,14 +15,26 @@ namespace Tabletop
         public AttackResult MakeAttack(TabletopSoldier attacker, TabletopSoldier target, float attackRange)
         {
             var attackResult = new AttackResult();
-            int weaponRange = attacker.EquippedWeapon.Range;
-
-            if (attackRange <= weaponRange)
+            if (attackRange <= attacker.EquippedWeapon.LongRange)
             {
-                attackResult.IsHit = D6.Roll() >= attacker.CurrentStats.GetBaseBSRoll();
+                WeaponModifier weaponModifier = attacker.EquippedWeapon.Modifier;
+                var equippedWeaponAttachments = attacker.EquippedWeaponAttachments;
+                for (int i = 0; i < equippedWeaponAttachments.Count; i++)
+                {
+                    for (int j = 0; j < equippedWeaponAttachments[i].Modifiers.Count; j++)
+                    {
+                        weaponModifier += equippedWeaponAttachments[i].Modifiers[j];
+                    }
+                }
+
+                int rangeModifier = attackRange <= attacker.EquippedWeapon.ShortRange ? weaponModifier.ShortRange : weaponModifier.LongRange;
+
+                int hitRoll = D6.Roll();
+                attackResult.IsHit = hitRoll + rangeModifier >= attacker.CurrentStats.GetBaseBSRoll();
                 if (attackResult.IsHit)
                 {
-                    attackResult.IsWounded = D6.Roll() >= target.CurrentStats.GetWoundRoll(attacker.EquippedWeapon.Strength);
+                    int woundRoll = D6.Roll();
+                    attackResult.IsWounded = woundRoll >= target.CurrentStats.GetWoundRoll(attacker.EquippedWeapon.Strength);
                     if (attackResult.IsWounded)
                     {
                         attackResult.Wounds = 1;

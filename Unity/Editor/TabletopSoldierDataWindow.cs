@@ -13,6 +13,8 @@ namespace Tabletop.Unity.Editor
         private string[] teamNames;
         private int selectedTeamIndex;
 
+        private Vector2 scrollPosition;
+
         private const string DATA_DIRECTORY = "SoldierData";
 
         [MenuItem("Window/Tabletop/Soldier Data Window")]
@@ -24,10 +26,11 @@ namespace Tabletop.Unity.Editor
 
         void OnEnable()
         {
-            if (tabletopSoldierDataContainer != null)
+            if (tabletopSoldierDataContainer == null)
             {
-                editor = UnityEditor.Editor.CreateEditor(tabletopSoldierDataContainer);
+                tabletopSoldierDataContainer = ScriptableObject.CreateInstance<TabletopSoldierDataContainer>();
             }
+            editor = UnityEditor.Editor.CreateEditor(tabletopSoldierDataContainer);
 
             refreshFiles();
         }
@@ -47,9 +50,6 @@ namespace Tabletop.Unity.Editor
         {
             if (GUILayout.Button("Create", GUILayout.MaxWidth(EditorGUIUtility.labelWidth)))
             {
-                tabletopSoldierDataContainer = ScriptableObject.CreateInstance<TabletopSoldierDataContainer>();
-                editor = UnityEditor.Editor.CreateEditor(tabletopSoldierDataContainer);
-
                 tabletopSoldierDataContainer.TabletopSoldierTeamData = new TabletopSoldierTeamData();
             }
 
@@ -58,12 +58,6 @@ namespace Tabletop.Unity.Editor
             if (EditorGUI.EndChangeCheck())
             {
                 var jsonData = File.ReadAllText(files[selectedTeamIndex]);
-
-                if (tabletopSoldierDataContainer == null)
-                {
-                    tabletopSoldierDataContainer = ScriptableObject.CreateInstance<TabletopSoldierDataContainer>();
-                    editor = UnityEditor.Editor.CreateEditor(tabletopSoldierDataContainer);
-                }
 
                 tabletopSoldierDataContainer.TabletopSoldierTeamData = JsonUtility.FromJson<TabletopSoldierTeamData>(jsonData);
             }
@@ -78,6 +72,8 @@ namespace Tabletop.Unity.Editor
                 save();
             }
 
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
             if (editor != null)
             {
                 EditorGUI.BeginChangeCheck();
@@ -87,6 +83,8 @@ namespace Tabletop.Unity.Editor
 //                    save();
                 }
             }
+
+            EditorGUILayout.EndScrollView();
         }
 
         private void save()

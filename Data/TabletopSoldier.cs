@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Shared;
 using Tabletop;
 
@@ -32,6 +33,19 @@ namespace Tabletop
                 {
                     return null;
                 }
+            }
+        }
+
+        public List<WeaponAttachmentDataDefinition> EquippedWeaponAttachments
+        {
+            get
+            {
+                List<WeaponAttachmentDataDefinition> equippedWeaponAttachments = new List<WeaponAttachmentDataDefinition>();
+                for (int i = 0; i < tabletopSoldierData.EquippedWeaponAttachments.Count; i++)
+                {
+                    equippedWeaponAttachments.Add(Service.Get<Data>().GetDataDefinitionById(tabletopSoldierData.EquippedWeaponAttachments[i]));
+                }
+                return equippedWeaponAttachments;
             }
         }
 
